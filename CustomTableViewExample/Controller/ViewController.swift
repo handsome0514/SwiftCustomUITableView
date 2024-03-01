@@ -7,7 +7,6 @@
 
 
 import UIKit
-import Fuzi
 
 class ViewController: UIViewController {
     
@@ -49,69 +48,33 @@ class ViewController: UIViewController {
     }
     
     func loadXMLData() {
-        let xmlFile = Bundle.main.path(forResource: "players", ofType: "xml")
-        let xmlData = NSData(contentsOfFile: xmlFile!)
         
-        do {
-          let document = try XMLDocument(data: xmlData! as Data)
-          
-            if document.root != nil {
-                var names: [String] = []
-                var ages: [String] = []
-                var nations: [String] = []
-                var positions: [String] = []
-                var squads: [String] = []
-                var websites: [String] = []
-                var images: [[String]] = []
-                
-                let namepath = "//element/name"
-                for element in document.xpath(namepath) {
-                    names.append(element.stringValue)
-                }
-                let agepath = "//element/age"
-                for element in document.xpath(agepath) {
-                    ages.append(element.stringValue)
-                }
-                let nationpath = "//element/nation"
-                for element in document.xpath(nationpath) {
-                    nations.append(element.stringValue)
-                }
-                let positionpath = "//element/pos"
-                for element in document.xpath(positionpath) {
-                    positions.append(element.stringValue)
-                }
-                let squadpath = "//element/squad"
-                for element in document.xpath(squadpath) {
-                    squads.append(element.stringValue)
-                }
-                
-                let webpath = "//element/website"
-                for element in document.xpath(webpath) {
-                    websites.append(element.stringValue)
-                }
-                
-                let imgpath = "//element/images"
-                for element in document.xpath(imgpath) {
-                    var imgs : [String] = []
-                    for element1 in element.children {
-                        imgs.append(element1.stringValue)
-                    }
-                    
-                    images.append(imgs)
-                }
-                                
-                for (index, _) in names.enumerated() {
-                    let player = Player(name: names[index], number: Int(squads[index])!, position: positions[index], age: Int(ages[index])!, nationality: nations[index], photos: images[index], website: websites[index])
-                    
-                    Players.players.append(player)
-                }
-                
-                classificationSectionData()
-              }
+        var names: [String] = []
+        var ages: [String] = []
+        var nations: [String] = []
+        var positions: [String] = []
+        var squads: [String] = []
+        var websites: [String] = []
+        var images: [[String]] = []
+        
+        var xmlParser = XMLParser()
+        xmlParser.fileName = "players"
+        var document = xmlParser.parseFromLocalFile()
+        names = xmlParser.getElements(path: "//element/name")
+        ages = xmlParser.getElements(path: "//element/age")
+        nations = xmlParser.getElements(path: "//element/nation")
+        positions = xmlParser.getElements(path: "//element/pos")
+        squads = xmlParser.getElements(path: "//element/squad")
+        images = xmlParser.getChildren(path: "//element/images")
+        websites = xmlParser.getElements(path: "//element/website")
+        
+        for (index, _) in names.enumerated() {
+            let player = Player(name: names[index], number: Int(squads[index])!, position: positions[index], age: Int(ages[index])!, nationality: nations[index], photos: images[index], website: websites[index])
             
-        } catch let error {
-          print(error)
+            Players.players.append(player)
         }
+        
+        classificationSectionData()
     }
     
     func classificationSectionData() {
