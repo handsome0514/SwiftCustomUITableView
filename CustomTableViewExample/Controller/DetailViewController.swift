@@ -34,7 +34,7 @@ class DetailViewController: UIViewController {
     @IBOutlet weak var squad: UILabel!
     @IBOutlet weak var national: UILabel!
     @IBOutlet weak var age: UILabel!
-    
+      
     
     override func viewDidLoad() {
         
@@ -43,8 +43,15 @@ class DetailViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         configureUI()
     }
+        
+    @IBAction func gotoMoreDetailView(_ sender: Any) {
+        performSegue(withIdentifier: "moreDetailViewController", sender: nil)
+    }
     
     func configureUI() {
+               
+        self.view.bringSubviewToFront(infoView)
+        
         backBtn.setTitle("", for: .normal)
         prevBtn.setTitle("", for: .normal)
         nextBtn.setTitle("", for: .normal)

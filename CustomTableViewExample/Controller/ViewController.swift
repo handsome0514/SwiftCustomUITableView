@@ -45,6 +45,14 @@ class ViewController: UIViewController {
         setBackgroundImage()
         loadXMLData()
         
+        tableHeader.layer.cornerRadius = 20.0
+        tableHeader.layer.masksToBounds = true
+        tableHeader.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
+        
+        playerTableView.layer.cornerRadius = 20.0
+        playerTableView.layer.masksToBounds = true
+        playerTableView.layer.maskedCorners = [.layerMinXMaxYCorner, .layerMaxXMaxYCorner]
+        
     }
     
     func loadXMLData() {
